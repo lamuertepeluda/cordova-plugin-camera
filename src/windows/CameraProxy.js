@@ -206,7 +206,7 @@
                         captureSettings = null;
 
                     //Need to compensate rotation on Windows Phone 8.1
-                    var _compensateRotation = function () {
+                    var _compensateRotation = function (capture) {
                         if (navigator.appVersion.indexOf("Windows Phone 8.1") >= 0 && capture !== null) {
                             //Other versions will deprecate this sh##
                             var display = Windows.Graphics.Display;
@@ -271,9 +271,9 @@
                                     // This is necessary since WP8.1 MediaCapture outputs video stream rotated 90 degrees CCW
                                     // TODO: This can be not consistent across devices, need additional testing on various devices
                                     //                                capture.setPreviewRotation(Windows.Media.Capture.VideoRotation.clockwise90Degrees);
-                                    _compensateRotation();
+                                    _compensateRotation.call(this,capture);
                                     if (navigator.appVersion.indexOf("Windows Phone 8.1") >= 0) {
-                                        Windows.Graphics.Display.DisplayProperties.addEventListener('orientationchanged', _compensateRotation);
+                                        Windows.Graphics.Display.DisplayProperties.addEventListener('orientationchanged', _compensateRotation.bind(this,capture));
                                     }
                                     // msdn.microsoft.com/en-us/library/windows/apps/hh452807.aspx
                                     capturePreview.msZoom = true;
